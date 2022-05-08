@@ -1,25 +1,49 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const date = require(__dirname + "/date.js");
+const mongoose = require('mongoose');
 
 const app = express();
 
-const items = ["장보기", "요리하기", "먹기"];
-const workItems = [];
-
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(express.static("public"));
+
+mongoose.connect("mongodb://localhost:27017/todolistDB");
+
+const itemsSchema = {
+  name: String
+};
+// creating a Model for the documents
+const Item = mongoose.model("Item", itemsSchema);
+
+const item1 = new Item({
+  name: "Welcome to your todoList!"
+});
+
+const item2 = new Item({
+  name: "Hit the + button to add a new item."
+});
+
+const item3 = new Item({
+  name: "<-- Hit this to delete an item."
+});
+
+const defaultItems = [item1, item2, item3];
+
+Item.insertMany(defaultItems, function(err){
+  if (err){
+    console.log(err);
+  } else {
+    console.log("Successfully saved default items to DB.");
+  }
+});
 
 app.get("/", function(req, res) {
 
-  // must put () after date to activate(use) the function
-  const day = date.getDate();
-
   res.render("list", {
-    listTitle: day,
+    listTitle: "Today",
     newListItems: items
   });
 
