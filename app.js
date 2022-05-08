@@ -67,17 +67,16 @@ app.get("/about", function(req, res) {
 
 app.post("/", function(req, res) {
 
-  const item = req.body.newItem;
-  console.log(req.body);
-  // the req.body.list is referring to the button name in the list.ejs form
-  // this if statement checks to see if the list of the new item came from the work list or not
-  if (req.body.list === "Work") {
-    workItems.push(item);
-    res.redirect("/work");
-  } else {
-    items.push(item);
-    res.redirect("/");
-  }
+  const itemName = req.body.newItem;
+
+  const item = new Item({
+    name: itemName
+  });
+
+  item.save();
+
+  res.redirect("/");
+
 });
 
 
