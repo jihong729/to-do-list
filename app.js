@@ -65,6 +65,19 @@ app.get("/about", function(req, res) {
   res.render("about");
 });
 
+app.post("/delete", function(req, res){
+  const checkedItemId = req.body.checkbox;
+
+  Item.findByIdAndRemove(checkedItemId, function(err){
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully removed checked item.");
+      res.redirect("/");
+    }
+  })
+})
+
 app.post("/", function(req, res) {
 
   const itemName = req.body.newItem;
