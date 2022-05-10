@@ -30,6 +30,14 @@ const item3 = new Item({
   name: "<-- Hit this to delete an item."
 });
 
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+};
+
+const List = mongoose.model("List", listSchema);
+
+
 const defaultItems = [item1, item2, item3];
 
 
@@ -54,11 +62,30 @@ app.get("/", function(req, res) {
   });
 });
 
-app.get("/work", function(req, res) {
-  res.render("list", {
-    listTitle: "Work List",
-    newListItems: workItems
+// Creating Dynamic Custom List Pages using Express Route Parameters
+app.get("/:customListName", function(req, res){
+  const customListName = req.params.customListName;
+
+// check if there already is a list created
+  List.findOne({name: customListName}, function(err, foundList){
+    if (!err){
+      if(!foundList){
+        //Create a new list
+          const list = new List({
+          name: customListName,
+          items: defaultItems
+          });
+
+          list.save();
+          res.redirect("/" + customListName);
+      } else {
+      //Show an existing list
+      res.render("list", {  listTitle: customListName,  newListItems: foundList.items
+    });
+    }
+  }
   });
+
 });
 
 app.get("/about", function(req, res) {
@@ -76,7 +103,7 @@ app.post("/delete", function(req, res){
       res.redirect("/");
     }
   })
-})
+});
 
 app.post("/", function(req, res) {
 
