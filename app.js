@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const _ = require("lodash");
 
 const app = express();
 
@@ -64,7 +65,8 @@ app.get("/", function(req, res) {
 
 // Creating Dynamic Custom List Pages using Express Route Parameters
 app.get("/:customListName", function(req, res){
-  const customListName = req.params.customListName;
+  // Capitalize the Custom List's First Letter
+  const customListName = _.capitalize(req.params.customListName);
 
 // check if there already is a list created
   List.findOne({name: customListName}, function(err, foundList){
