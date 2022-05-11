@@ -94,15 +94,26 @@ app.get("/about", function(req, res) {
 
 app.post("/delete", function(req, res){
   const checkedItemId = req.body.checkbox;
+  const listName = req.body.listName;
 
-  Item.findByIdAndRemove(checkedItemId, function(err){
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Successfully removed checked item.");
-      res.redirect("/");
-    }
-  })
+  if (listName === "Today") {
+    Item.findByIdAndRemove(checkedItemId, function(err){
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Successfully removed checked item.");
+        res.redirect("/");
+      }
+    });
+  } else {
+    // Delete Items from the Custom ToDo Lists
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemId}}}, function(err, foundList){
+      if (!err) {
+        res.redirect("/" + listName);
+      }
+    });
+  }
+
 });
 
 app.post("/", function(req, res) {
