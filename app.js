@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // Will change the connection url so that it will connect to MongoDB Atlas
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+mongoose.connect("mongodb+srv://admin-sam:test123@cluster0.dcbr8.mongodb.net/todolistDB");
 
 const itemsSchema = {
   name: String
