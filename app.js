@@ -58,7 +58,7 @@ app.get("/", function(req, res) {
         res.redirect("/");
       });
     } else {
-      res.render("list", {  listTitle: "흥딩스쿨 할일 목록",  newListItems: foundItems
+      res.render("list", {  listTitle: "To Do List",  newListItems: foundItems
       });
     }
   });
