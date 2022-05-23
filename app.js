@@ -21,15 +21,15 @@ const itemsSchema = {
 const Item = mongoose.model("Item", itemsSchema);
 
 const item1 = new Item({
-  name: "Welcome to your todoList!"
+  name: "흥딩스쿨 할일 목록에 온 것을 환영합니다!"
 });
 
 const item2 = new Item({
-  name: "Hit the + button to add a new item."
+  name: "+ 버튼을 눌러서 새로운 할일을 등록하세요!"
 });
 
 const item3 = new Item({
-  name: "<-- Hit this to delete an item."
+  name: "<--체크박스를 누르면 자동으로 할일이 삭제됩니다."
 });
 
 const listSchema = {
@@ -58,7 +58,7 @@ app.get("/", function(req, res) {
         res.redirect("/");
       });
     } else {
-      res.render("list", {  listTitle: "Today",  newListItems: foundItems
+      res.render("list", {  listTitle: "흥딩스쿨 할일 목록",  newListItems: foundItems
       });
     }
   });
